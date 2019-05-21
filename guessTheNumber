@@ -1,0 +1,77 @@
+import simplegui
+import random
+import math
+
+retry=0
+secret_number=0
+count=0
+
+# helper function to start and restart the game
+def new_game():
+    global secret_number
+    # initialize global variables used in your code here
+    print "New Game!"
+    print ""
+    if retry==100:
+        range100()
+    elif retry==1000:
+        range1000()
+    else:
+        range100()
+
+# define event handlers for control panel
+def range100():
+    global retry
+    retry=100
+    # button that changes the range to [0,100) and starts a new game   
+    global secret_number, count
+    count=7
+    print "Range is [0,100)"
+    secret_number=random.randrange(0,100)
+    
+
+def range1000():
+    global retry
+    retry=1000
+    # button that changes the range to [0,1000) and starts a new game     
+    global secret_number, count
+    count=10
+    print ""
+    print "New Game!"
+    print "Range is [0,1000)"
+    secret_number=random.randrange(0,1000)
+
+    
+def input_guess(guess):
+    # main game logic goes here	
+    global secret_number
+    global count
+    print "Guess was", int(guess)
+    if int(guess)>secret_number:
+        count=count-1
+        print "Lower, you have ", count, " lives left"
+    elif int(guess)<secret_number:
+        count=count-1
+        print "Higher, you have ", count, " lives left"
+    else:
+        count=count-1
+        print "Correct!"
+        print ""
+        new_game()
+    if count==0:
+        print "Too bad, you're out of lives. Try again!"
+        new_game()
+    
+# create frame
+f=simplegui.create_frame("Guess the number",200,200)
+
+# register event handlers for control elements and start frame
+f.add_button("Range is [0, 100)", range100, 200)
+f.add_button("Range is [0, 1000)", range1000, 200)
+f.add_input("Enter a guess", input_guess, 100)
+# call new_game 
+new_game()
+
+
+# always remember to check your completed program against the grading rubric
+f.start()
